@@ -135,7 +135,7 @@ def country_rankings_bar(
         orientation='h',
         title=title,
         color=val_col,
-        color_continuous_scale=SEQUENTIAL_GREEN,
+        color_continuous_scale='Greens',
         labels={val_col: 'Revenue ($)', name_col: ''},
     )
     fig.update_layout(
@@ -365,7 +365,7 @@ def revenue_treemap(df: pd.DataFrame, top_n: int = 200) -> go.Figure:
         path=['IMPORTER COUNTRY', 'IMPORTER NAME'],
         values='USD FOB',
         color='USD FOB',
-        color_continuous_scale=SEQUENTIAL_GREEN,
+        color_continuous_scale='Greens',
         title=f'Revenue Treemap — Top {top_n} Importers (Country → Buyer)',
     )
     _treemap_layout = {**_LAYOUT, 'margin': dict(l=10, r=10, t=50, b=10)}
@@ -463,7 +463,7 @@ def product_sunburst(df: pd.DataFrame) -> go.Figure:
         path=['HS_GROUP_LABEL', 'HS CODE', 'PRODUCT_TYPE'],
         values='USD FOB',
         color='USD FOB',
-        color_continuous_scale=SEQUENTIAL_GREEN,
+        color_continuous_scale='Greens',
         title='Product Mix — HS Group → HS Code → Product Type',
     )
     fig.update_traces(textinfo='label+percent parent')
@@ -1145,7 +1145,7 @@ def seasonality_heatmap(df: pd.DataFrame) -> go.Figure:
         z,
         x=[str(c) for c in pivot.columns.tolist()],
         y=pivot.index.tolist(),
-        color_continuous_scale=SEQUENTIAL_GREEN,
+        color_continuous_scale='Greens',
         zmin=0, zmax=max(zmax, 0.1),
         labels={'color': 'Revenue ($M)', 'x': 'Year', 'y': 'Month'},
         title='Monthly Revenue Heatmap — Month × Year ($M)',
@@ -1435,7 +1435,7 @@ def brand_bubble(df: pd.DataFrame) -> go.Figure:
     fig = px.scatter(
         brand_stats, x='avg_deal', y='freq', size='total_rev',
         hover_name='IMPORTER NAME', color='total_rev',
-        color_continuous_scale=SEQUENTIAL_GREEN, size_max=60, log_x=True,
+        color_continuous_scale='Greens', size_max=60, log_x=True,
         title='Brand Landscape — Avg Deal Size vs Shipment Frequency (size = Total Revenue)',
         labels={'avg_deal': 'Avg Deal ($, log)', 'freq': 'Shipment Frequency', 'total_rev': 'Revenue ($)'},
     )
@@ -1649,7 +1649,7 @@ def exporter_share_treemap(df: pd.DataFrame, top_n: int = 20) -> go.Figure:
     )
     fig = px.treemap(
         top_exp, path=['EXPORTER NAME'], values='Revenue',
-        color='Revenue', color_continuous_scale=SEQUENTIAL_GREEN,
+        color='Revenue', color_continuous_scale='Greens',
         title=f'Exporter Market Share — Top {top_n} Exporters',
     )
     fig.update_traces(textinfo='label+percent root')
