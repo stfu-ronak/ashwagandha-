@@ -705,17 +705,26 @@ def hs_bar(df: pd.DataFrame, top_n: int = 10) -> go.Figure:
         .sort_values('Revenue', ascending=True)
     )
     hs_rev['HS CODE'] = hs_rev['HS CODE'].astype(str)
-    fig = px.bar(
-        hs_rev, x='Revenue', y='HS CODE', orientation='h',
-        title=f'Top {top_n} HS Codes by Revenue',
-        color='Revenue', color_continuous_scale='Greens',
-        labels={'Revenue': 'Revenue ($)', 'HS CODE': 'HS Code'},
-    )
-    fig.update_layout(
-        **_LAYOUT, height=420,
-        coloraxis_showscale=False,
-        xaxis_tickformat='$,.0f',
-    )
+    if hs_rev.empty:
+        fig = go.Figure()
+        fig.update_layout(**_LAYOUT, title='No HS Code data', height=420)
+        return fig
+    fig = go.Figure(go.Bar(
+        x=hs_rev['Revenue'],
+        y=hs_rev['HS CODE'],
+        orientation='h',
+        marker_color=COLORS['mid_green'],
+        text=[f'${v/1e6:.1f}M' for v in hs_rev['Revenue']],
+        textposition='outside',
+    ))
+    fig.update_layout(**{
+        **_LAYOUT,
+        'title': f'Top {top_n} HS Codes by Revenue',
+        'height': 420,
+        'xaxis': dict(tickformat='$,.0f', title='Revenue ($)'),
+        'yaxis': dict(title='HS Code'),
+        'margin': dict(l=20, r=100, t=45, b=20),
+    })
     return fig
 
 
@@ -742,20 +751,21 @@ def hs_country_heatmap(df: pd.DataFrame, top_n_hs: int = 10, top_n_countries: in
         fig = go.Figure()
         fig.update_layout(**_LAYOUT, title='No data for heatmap', height=400)
         return fig
-    fig = px.imshow(
-        pivot.values / 1e6,
+    fig = go.Figure(go.Heatmap(
+        z=pivot.values / 1e6,
         x=pivot.columns.tolist(),
         y=pivot.index.tolist(),
-        color_continuous_scale='Greens',
-        labels={'color': 'Revenue ($M)', 'x': 'Importer Country', 'y': 'HS Code'},
-        title='HS Code × Country Revenue Heatmap ($M)',
-        aspect='auto',
-    )
-    fig.update_layout(
-        **_LAYOUT, height=420,
-        xaxis=dict(tickangle=-45),
-        coloraxis_colorbar=dict(title='Revenue ($M)'),
-    )
+        colorscale=[[0, '#f0fff7'], [0.33, '#82e0aa'], [0.66, '#2e9e5b'], [1, '#0f4025']],
+        colorbar=dict(title='Revenue ($M)'),
+        hoverongaps=False,
+    ))
+    fig.update_layout(**{
+        **_LAYOUT,
+        'title': 'HS Code × Country Revenue Heatmap ($M)',
+        'height': 420,
+        'xaxis': dict(tickangle=-45, title='Importer Country'),
+        'yaxis': dict(title='HS Code'),
+    })
     return fig
 
 
