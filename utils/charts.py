@@ -503,14 +503,14 @@ def product_category_donut(df: pd.DataFrame) -> go.Figure:
         sort=False,
         direction='clockwise',
     ))
-    fig.update_layout(
+    fig.update_layout(**{
         **_LAYOUT,
-        paper_bgcolor='#ffffff',
-        title='Product Type Revenue Share',
-        height=440,
-        showlegend=False,
-        margin=dict(l=80, r=80, t=55, b=40),
-    )
+        'paper_bgcolor': '#ffffff',
+        'title': 'Product Type Revenue Share',
+        'height': 440,
+        'showlegend': False,
+        'margin': dict(l=80, r=80, t=55, b=40),
+    })
     return fig
 
 
@@ -534,21 +534,16 @@ def product_category_bar(df: pd.DataFrame) -> go.Figure:
         textfont=dict(size=11, color='#333333'),
         hovertemplate='<b>%{y}</b><br>Revenue: $%{x:.2f}M<extra></extra>',
     ))
-    fig.update_layout(
+    fig.update_layout(**{
         **_LAYOUT,
-        paper_bgcolor='#ffffff',
-        title='Revenue by Product Type ($M)',
-        xaxis=dict(
-            title='Revenue ($M)',
-            showgrid=True,
-            gridcolor='#eeeeee',
-            range=[0, max_val * 1.5],
-        ),
-        yaxis=dict(title=''),
-        height=440,
-        showlegend=False,
-        margin=dict(l=10, r=20, t=55, b=20),
-    )
+        'paper_bgcolor': '#ffffff',
+        'title': 'Revenue by Product Type ($M)',
+        'xaxis': dict(title='Revenue ($M)', showgrid=True, gridcolor='#eeeeee', range=[0, max_val * 1.5]),
+        'yaxis': dict(title=''),
+        'height': 440,
+        'showlegend': False,
+        'margin': dict(l=10, r=20, t=55, b=20),
+    })
     return fig
 
 
