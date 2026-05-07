@@ -708,7 +708,7 @@ def hs_bar(df: pd.DataFrame, top_n: int = 10) -> go.Figure:
     fig = px.bar(
         hs_rev, x='Revenue', y='HS CODE', orientation='h',
         title=f'Top {top_n} HS Codes by Revenue',
-        color='Revenue', color_continuous_scale=SEQUENTIAL_GREEN,
+        color='Revenue', color_continuous_scale='Greens',
         labels={'Revenue': 'Revenue ($)', 'HS CODE': 'HS Code'},
     )
     fig.update_layout(
@@ -746,7 +746,7 @@ def hs_country_heatmap(df: pd.DataFrame, top_n_hs: int = 10, top_n_countries: in
         pivot.values / 1e6,
         x=pivot.columns.tolist(),
         y=pivot.index.tolist(),
-        color_continuous_scale=SEQUENTIAL_GREEN,
+        color_continuous_scale='Greens',
         labels={'color': 'Revenue ($M)', 'x': 'Importer Country', 'y': 'HS Code'},
         title='HS Code × Country Revenue Heatmap ($M)',
         aspect='auto',
@@ -1271,17 +1271,27 @@ def sankey_trade_flows(df: pd.DataFrame) -> go.Figure:
     values  = (ep['USD FOB'] / 1e6).tolist() + (pi['USD FOB'] / 1e6).tolist()
 
     fig = go.Figure(go.Sankey(
-        arrangement='snap',
-        node=dict(label=nodes, color=node_colors, pad=15, thickness=20,
-                  line=dict(color='white', width=0.5)),
-        link=dict(source=sources, target=targets, value=values,
-                  color='rgba(150,150,150,0.25)'),
+        arrangement='freeform',
+        node=dict(
+            label=nodes,
+            color=node_colors,
+            pad=25,
+            thickness=28,
+            line=dict(color='white', width=0.8),
+        ),
+        link=dict(
+            source=sources,
+            target=targets,
+            value=values,
+            color='rgba(150,150,150,0.20)',
+        ),
     ))
-    fig.update_layout(
+    fig.update_layout(**{
         **_LAYOUT,
-        title='Trade Flows — Exporter Country → Product Type → Importer Country ($M, top nodes only)',
-        height=620,
-    )
+        'title': 'Trade Flows — Exporter Country → Product Type → Importer Country ($M, top nodes only)',
+        'height': 720,
+        'font': dict(family='system-ui, -apple-system, sans-serif', size=14),
+    })
     return fig
 
 

@@ -41,16 +41,6 @@ tab1, tab2, tab3, tab4 = st.tabs([
 
 # ── Tab 1: Brand Landscape ────────────────────────────────────────────────────
 with tab1:
-    st.subheader("Buyer Brand Landscape")
-    st.caption(
-        "Bubble chart shows importer brands (single-entity names, no slash/comma). "
-        "X-axis (log): average deal size. Y-axis: shipment frequency. Bubble size: total revenue. "
-        "Top-right corner = high-value, repeat buyers."
-    )
-
-    st.plotly_chart(charts.brand_bubble(df), use_container_width=True)
-
-    st.markdown("---")
     st.subheader("Top 15 Brands by Revenue")
 
     brand_tbl = (
